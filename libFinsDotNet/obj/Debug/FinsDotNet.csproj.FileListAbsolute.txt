@@ -1,5 +1,0 @@
-F:\NOOD-PLC\Clienti\Dertech\Librerie software\libfinsnet\libFinsDotNet\libFinsDotNet\obj\Debug\FinsDotNet.csproj.CoreCompileInputs.cache
-F:\NOOD-PLC\Clienti\Dertech\Librerie software\libfinsnet\libFinsDotNet\libFinsDotNet\bin\Debug\libFins.net.dll
-F:\NOOD-PLC\Clienti\Dertech\Librerie software\libfinsnet\libFinsDotNet\libFinsDotNet\bin\Debug\libFins.net.pdb
-F:\NOOD-PLC\Clienti\Dertech\Librerie software\libfinsnet\libFinsDotNet\libFinsDotNet\obj\Debug\libFins.net.dll
-F:\NOOD-PLC\Clienti\Dertech\Librerie software\libfinsnet\libFinsDotNet\libFinsDotNet\obj\Debug\libFins.net.pdb

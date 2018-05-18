@@ -50,7 +50,7 @@ namespace FinsDotNet
             finsErrCannotWrite = 0x00010009
         }
 
-        #region "HELPER METHODS"
+        #region "HELPER GET METHODS"
         /// <summary>
         /// Returns an Int from Omron PLC
         /// </summary>
@@ -214,6 +214,152 @@ namespace FinsDotNet
             outVal = BitConverter.ToInt64(tmpByte, 0);
 
             return outVal;
+        }
+        #endregion
+
+        #region "HELPER SET METHODS"
+        /// <summary>
+        /// Sets an Omron PLC Int  
+        /// </summary>
+        /// <param name="buffer">The byte buffer of data.</param>
+        /// <param name="start">The start offset for the selected variable. <para /> IMPORTANT: The offset has the value of a WORD (2 byte)</param>
+        /// <returns></returns>
+        public static void SetIntAt(ref byte[] buffer, int start, Int16 value) {
+            int startByte = start * 2;//WORD offset
+            byte[] tmpByte = new Byte[2];
+
+            if ((buffer.Length == 0) || (buffer.Length < startByte + 2)) return;
+
+            tmpByte = BitConverter.GetBytes(value);
+
+            buffer[startByte + 1] = tmpByte[0];
+            buffer[startByte + 0] = tmpByte[1];
+        }
+
+        /// <summary>
+        /// Sets an Omron PLC UInt
+        /// </summary>
+        /// <param name="buffer">The byte buffer of data.</param>
+        /// <param name="start">The start offset for the selected variable. <para /> IMPORTANT: The offset has the value of a WORD (2 byte)</param>
+        /// <returns></returns>
+        public static void SetUIntAt(ref byte[] buffer, int start, UInt16 value) {
+            int startByte = start * 2;//WORD offset
+            byte[] tmpByte = new Byte[2];
+
+            if ((buffer.Length == 0) || (buffer.Length < startByte + 2)) return;
+
+            tmpByte = BitConverter.GetBytes(value);
+
+            buffer[startByte + 1] = tmpByte[0];
+            buffer[startByte + 0] = tmpByte[1];
+        }
+
+        /// <summary>
+        /// Sets an Omron PLC DInt
+        /// </summary>
+        /// <param name="buffer">The byte buffer of data.</param>
+        /// <param name="start">The start offset for the selected variable. <para /> IMPORTANT: The offset has the value of a WORD (2 byte)</param>
+        /// <returns></returns>
+        public static void SetDintAt(ref byte[] buffer, int start, Int32 value) {
+            int startByte = start * 2;//WORD offset
+            byte[] tmpByte = new Byte[4];
+
+            if ((buffer.Length == 0) || (buffer.Length < startByte + 4)) return;
+
+            tmpByte = BitConverter.GetBytes(value);
+
+            buffer[startByte + 1]= tmpByte[0];
+            buffer[startByte + 0]= tmpByte[1];
+            buffer[startByte + 3]= tmpByte[2];
+            buffer[startByte + 2]= tmpByte[3];
+        }
+
+        /// <summary>
+        /// Sets an Omron PLC UDint
+        /// </summary>
+        /// <param name="buffer">The byte buffer of data.</param>
+        /// <param name="start">The start offset for the selected variable. <para /> IMPORTANT: The offset has the value of a WORD (2 byte)</param>
+        /// <returns></returns>
+        public static void SetUDintAt(ref byte[] buffer, int start, UInt32 value) {
+            int startByte = start * 2;//WORD offset
+            byte[] tmpByte = new Byte[4];
+
+            if ((buffer.Length == 0) || (buffer.Length < startByte + 4)) return;
+
+            tmpByte = BitConverter.GetBytes(value);
+
+            buffer[startByte + 1] = tmpByte[0];
+            buffer[startByte + 0] = tmpByte[1];
+            buffer[startByte + 3] = tmpByte[2];
+            buffer[startByte + 2] = tmpByte[3];
+        }
+
+        /// <summary>
+        /// Sets an Omron PLC Real 
+        /// </summary>
+        /// <param name="buffer">The byte buffer of data.</param>
+        /// <param name="start">The start offset for the selected variable. <para /> IMPORTANT: The offset has the value of a WORD (2 byte)</param>
+        /// <returns></returns>
+        public static void SetRealAt(ref byte[] buffer, int start, Single value) {
+            int startByte = start * 2;//WORD offset
+            byte[] tmpByte = new Byte[4];
+
+            if ((buffer.Length == 0) || (buffer.Length < startByte + 4)) return;
+
+            tmpByte = BitConverter.GetBytes(value);
+
+            buffer[startByte + 1] = tmpByte[0];
+            buffer[startByte + 0] = tmpByte[1];
+            buffer[startByte + 3] = tmpByte[2];
+            buffer[startByte + 2] = tmpByte[3];
+        }
+
+        /// <summary>
+        /// Sets an Omron PLC LReal
+        /// </summary>
+        /// <param name="buffer">The byte buffer of data.</param>
+        /// <param name="start">The start offset for the selected variable. <para /> IMPORTANT: The offset has the value of a WORD (2 byte)</param>
+        /// <returns></returns>
+        public static void SetLRealAt(ref byte[] buffer, int start, Double value) {
+            int startByte = start * 2;//WORD offset
+            byte[] tmpByte = new Byte[8];
+
+            if ((buffer.Length == 0) || (buffer.Length < startByte + 8)) return;
+
+            tmpByte = BitConverter.GetBytes(value);
+
+            buffer[startByte + 1]= tmpByte[0];
+            buffer[startByte + 0]= tmpByte[1];
+            buffer[startByte + 3]= tmpByte[2];
+            buffer[startByte + 2]= tmpByte[3];
+            buffer[startByte + 5]= tmpByte[4];
+            buffer[startByte + 4]= tmpByte[5];
+            buffer[startByte + 7]= tmpByte[6];
+            buffer[startByte + 6]= tmpByte[7];
+        }
+
+        /// <summary>
+        /// Sets an Omron PLC LInt
+        /// </summary>
+        /// <param name="buffer">The byte buffer of data.</param>
+        /// <param name="start">The start offset for the selected variable. <para /> IMPORTANT: The offset has the value of a WORD (2 byte)</param>
+        /// <returns></returns>
+        public static void SetLIntAt(byte[] buffer, int start, Int64 value) {
+            int startByte = start * 2;//WORD offset
+            byte[] tmpByte = new Byte[8];
+
+            if ((buffer.Length == 0) || (buffer.Length < startByte + 8)) return;
+
+            tmpByte = BitConverter.GetBytes(value);
+
+            buffer[startByte + 1] = tmpByte[0];
+            buffer[startByte + 0] = tmpByte[1];
+            buffer[startByte + 3] = tmpByte[2];
+            buffer[startByte + 2] = tmpByte[3];
+            buffer[startByte + 5] = tmpByte[4];
+            buffer[startByte + 4] = tmpByte[5];
+            buffer[startByte + 7] = tmpByte[6];
+            buffer[startByte + 6] = tmpByte[7];
         }
         #endregion
     }
@@ -407,7 +553,6 @@ namespace FinsDotNet
         }
 
         //DISCONNECT: shutdown and close the socket connection
-
         public int Disconnect() {
             try {
                 finsClient.Shutdown(SocketShutdown.Both);

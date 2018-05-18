@@ -574,6 +574,7 @@ namespace FinsDotNet
         /// <returns>The status integer</returns>
         public int WriteArea(FinsProtocol.MemoryArea area, int start, int size, byte[] buffer) {
             currentStatus = 0;
+            ReceiveBufferSize = 14 + size * 2;
             byte[] returnBuffer;
             byte[] text = new Byte[6 + buffer.Length];
 

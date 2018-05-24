@@ -5,6 +5,9 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Net;
 using System.Net.Sockets;
+using System.Net.NetworkInformation;
+using System.Diagnostics;
+ 
 
 namespace FinsDotNet
 {
@@ -527,12 +530,27 @@ namespace FinsDotNet
         #endregion
 
         #region "FINS PROTOCOL PUBLIC METHODS"
+        //PING THE REMOTE HOST
+        public bool PingPlc(string address)
+        {
+            Ping p = new Ping();
+            PingReply r = p.Send(address);
+
+            if (r.Status == IPStatus.Success) return true;
+           
+            return false;
+        }
 
         //CONNECT UDP: synchronously connects to a UDP/IP endpoint via socket
         public int ConnectUdp(string address) {
+            currentStatus = 0;
+
+            //first try to ping the local endpoint
+            if (!PingPlc(address)) return (int)FinsProtocol.ErrorCodes.errUnreachableHost;
+
+            //try to create a socket client
             try {
-                //ipHostInfo = Dns.GetHostEntry(Dns.GetHostName()); //debug
-                ipAddress = IPAddress.Parse(address);//ipHostInfo.AddressList[0]; //TODO: IPAddress.Parse(address)
+                ipAddress = IPAddress.Parse(address);
                 remoteEP = new IPEndPoint(ipAddress, port);
 
                 finsClient = new Socket(ipAddress.AddressFamily, SocketType.Dgram, ProtocolType.Udp);
@@ -542,7 +560,9 @@ namespace FinsDotNet
                 return currentStatus;
             }
 
-            try {
+            //then try to connect to host
+            try
+            {
                 finsClient.Connect(remoteEP);
             } catch (Exception e) {
                 Console.WriteLine(e.ToString());
@@ -554,6 +574,7 @@ namespace FinsDotNet
 
         //DISCONNECT: shutdown and close the socket connection
         public int Disconnect() {
+            currentStatus = 0;
             try {
                 finsClient.Shutdown(SocketShutdown.Both);
                 finsClient.Close();
@@ -717,9 +738,20 @@ namespace FinsDotNet
 
         //SYNC UDP RECEIVE
         private void UdpReceive(Socket client, ref byte[] data) {
+            Stopwatch t = new Stopwatch();
+            t.Start();
+
             try {
                 int byteRead;
                 byteRead = client.Receive(data);
+
+                if (t.ElapsedMilliseconds > 5000) {
+                    t.Stop();
+                    t = null;
+
+                    currentStatus = (int)FinsProtocol.ErrorCodes.errReceiveTimeout;
+                    return;
+                }
             } catch (Exception e) {
                 Console.WriteLine(e.ToString());
                 currentStatus = (int)FinsProtocol.ErrorCodes.errDataReceive;

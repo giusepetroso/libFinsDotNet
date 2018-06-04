@@ -7,7 +7,7 @@ using System.Net;
 using System.Net.Sockets;
 using System.Net.NetworkInformation;
 using System.Diagnostics;
- 
+using System.Threading;
 
 namespace FinsDotNet
 {
@@ -376,6 +376,8 @@ namespace FinsDotNet
         private byte srcNetAddr = 0;
         private byte srcNodeNum = 0;
         private byte srcUnitNum = 0;
+
+        private Object lck = new Object();//the lock for thread synchronization
         #endregion
 
         #region "SOCKET MANAGEMENT VARIABLES"
@@ -684,7 +686,7 @@ namespace FinsDotNet
 
             // Frame send via UDP
             byte[] sendFrame = commandFrame.ToByteArray();
-            UdpSend(client, sendFrame);
+            lock (lck) { UdpSend(client, sendFrame); }
             if (currentStatus != 0) {
                 rspText = new Byte[0];
                 return (int)FinsProtocol.ErrorCodes.errDataSend;
@@ -694,7 +696,7 @@ namespace FinsDotNet
 
             // Frame Receive via UDP
             byte[] receiveFrame = new Byte[ReceiveBufferSize];
-            UdpReceive(client, ref receiveFrame);
+            lock (lck) { UdpReceive(client, ref receiveFrame); }
             if (currentStatus != 0) {
                 rspText = new Byte[0];
                 return (int)FinsProtocol.ErrorCodes.errDataReceive;
